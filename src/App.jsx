@@ -7,6 +7,7 @@ const App = () => {
     { title: '', points: [''] }
   ]);
   const [copied, setCopied] = useState(false);
+  const [subCopied, setSubCopied] = useState(false);
 
   const addModule = () => setModules([...modules, { title: '', points: [''] }]);
   const removeModule = (index) => setModules(modules.filter((_, i) => i !== index));
@@ -41,10 +42,11 @@ const App = () => {
     return `${day}${suffix} ${months[d.getMonth()]} ${d.getFullYear()}`;
   };
 
+  const formattedDate = formatDate(date);
+  let subject = `EOD Update - ${formattedDate}`;
+
   const generateEOD = () => {
-    const formattedDate = formatDate(date);
-    let output = `EOD Update - ${formattedDate}\n`;
-    output += `Hi Harshit Sir and Aniket Sir,\n`;
+    let output = `Hi Harshit Sir and Aniket Sir,\n`;
     output += `Here's the summary of today's work:\n\n`;
 
     modules.forEach((module, index) => {
@@ -77,6 +79,23 @@ const App = () => {
       el.remove();
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
+    }
+  };
+
+  const copySubject = async () => {
+    try {
+      await navigator.clipboard.writeText(subject);
+      setSubCopied(true);
+      setTimeout(() => setSubCopied(false), 2000);
+    } catch (err) {
+      const el = document.createElement('textarea');
+      el.value = subject;
+      document.body.appendChild(el);
+      el.select();
+      document.execCommand('copy');
+      el.remove();
+      setSubCopied(true);
+      setTimeout(() => setSubCopied(false), 2000);
     }
   };
 
@@ -189,7 +208,33 @@ const App = () => {
           </div>
 
           {/* Right Panel - Preview */}
-          <div className="lg:sticky lg:top-8 h-fit">
+          <div className="lg:sticky lg:top-8 h-fit space-y-2">
+            <div className="bg-white rounded-2xl shadow p-6 border border-gray-200">
+                <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <div className="p-3 bg-emerald-50 rounded-xl">
+                    <FileText className="text-emerald-600" size={24} />
+                  </div>
+                  <h2 className="text-2xl font-semibold text-gray-900">{subject}</h2>
+                </div>
+                <button
+                  onClick={copySubject}
+                  className={`flex items-center gap-2 px-4 py-2 rounded-lg transition font-semibold shadow ${copied ? 'bg-emerald-600 text-white' : 'bg-teal-600 text-white hover:bg-teal-700'}`}
+                >
+                  {subCopied ? (
+                    <>
+                      <Check size={18} />
+                      Copied!
+                    </>
+                  ) : (
+                    <>
+                      <Copy size={18} />
+                      Copy
+                    </>
+                  )}
+                </button>
+              </div>
+            </div>
             <div className="bg-white rounded-2xl shadow p-6 border border-gray-200">
               <div className="flex items-center justify-between mb-6">
                 <div className="flex items-center gap-3">
