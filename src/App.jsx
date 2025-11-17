@@ -61,7 +61,7 @@ const App = () => {
       }
     });
 
-    output += `Regards, Abhishek`;
+    output += `Regards, \n Abhishek`;
     return output;
   };
 
@@ -210,7 +210,7 @@ const App = () => {
           {/* Right Panel - Preview */}
           <div className="lg:sticky lg:top-8 h-fit space-y-2">
             <div className="bg-white rounded-2xl shadow p-6 border border-gray-200">
-                <div className="flex items-center justify-between">
+              <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   <div className="p-3 bg-emerald-50 rounded-xl">
                     <FileText className="text-emerald-600" size={24} />
